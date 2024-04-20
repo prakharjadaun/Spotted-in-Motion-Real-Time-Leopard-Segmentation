@@ -1,3 +1,8 @@
 numpy
 opencv-python
 pandas
+streamlit
+pathlib
+pillow
+dataclasses
+ultralytics

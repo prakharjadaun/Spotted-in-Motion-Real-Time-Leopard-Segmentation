@@ -1,5 +1,5 @@
 from setuptools import find_packages, setup
-from typing import List
+from typing import List # type: ignore
 
 HYPHEN_E_DOT = '-e .'
 def get_requirements(file_path:str)->List[str]:
