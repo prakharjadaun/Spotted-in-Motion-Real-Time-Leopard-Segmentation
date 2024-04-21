@@ -6,3 +6,4 @@ pathlib
 pillow
 dataclasses
 ultralytics
+playsound

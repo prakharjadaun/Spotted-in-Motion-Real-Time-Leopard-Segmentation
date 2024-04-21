@@ -39,7 +39,6 @@ try:
     model_loader = ModelLoader()
     model = model_loader.load_model()
 
-    
     cam_source = CamSource()
     st.sidebar.header("Video Config")
     source_radio = st.sidebar.radio(

@@ -5,6 +5,7 @@ from components.cam_source import CamSource
 from logger import logging
 from exception import CustomException
 import json
+from playsound import playsound
 
 i=0
 def _write_output_json(res,filename):
@@ -63,11 +64,12 @@ def _display_detected_frames(conf, model, st_frame, image):
         res_plotted = res[0].plot()
 
         if(len(res[0].boxes.conf)>0):
+            playsound('model/warning.mp3')
             filename = 'outputs/result'+str(i)
             cv2.imwrite(filename+'.jpg',res_plotted)
             _write_output_json(res[0],filename)
             print("LEOPARD SPOTTED".center(80,'-'))
-            
+            # playsound("")
             i+=1
         st_frame.image(res_plotted,
                     caption='Segmented Feed',
