@@ -98,12 +98,18 @@ def play_webcam(conf, model):
         logging.info("Inside play_webcam function")
         cam_source = CamSource()
         source_webcam = cam_source.get_webcam_path()
-        if st.sidebar.button('Detect Objects'):
+        a = st.sidebar.button('Detect Objects',key="1")
+       
+        if a:
             try:
+                b = st.sidebar.button("Stop webcam",key="2")
                 vid_cap = cv2.VideoCapture(source_webcam)
                 st_frame = st.empty()
                 logging.info("Starting the camera feed")
                 while (vid_cap.isOpened()):
+                    if b:
+                        vid_cap.release()
+                        break
                     success, image = vid_cap.read()
                     if success:
                         _display_detected_frames(conf,

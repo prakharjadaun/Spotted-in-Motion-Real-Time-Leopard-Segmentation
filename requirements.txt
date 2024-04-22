@@ -6,4 +6,4 @@ pathlib
 pillow
 dataclasses
 ultralytics
-playsound
+playsound==1.2.2
