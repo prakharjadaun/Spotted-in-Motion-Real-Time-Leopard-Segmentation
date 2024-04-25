@@ -7,3 +7,6 @@ pillow
 dataclasses
 ultralytics
 playsound==1.2.2
+flask
+geocoder
+datetime

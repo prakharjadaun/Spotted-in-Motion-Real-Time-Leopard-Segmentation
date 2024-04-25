@@ -6,6 +6,7 @@ from logger import logging
 from exception import CustomException
 import json
 from playsound import playsound
+from datetime import datetime # type: ignore
 
 i=0
 def _write_output_json(res,filename):
@@ -33,6 +34,8 @@ def _write_output_json(res,filename):
 
     # Add mask values to the dictionary
     output_data["mask_values"] = res.masks.xy[0].tolist()
+    # output_data['location'] = 
+    output_data['time'] =  str(datetime.now())
 
     # Write the dictionary to a JSON file
     filename = filename + ".json"
@@ -79,7 +82,7 @@ def _display_detected_frames(conf, model, st_frame, image):
     except Exception as e:
         raise CustomException(e,sys)
 
-def play_webcam(conf, model):
+def play_webcam(conf, model) -> bool:
     """
     Plays a webcam stream. Segments Leopard in real-time using the fine tuned YOLOv8 leopard segmentation model.
 
@@ -88,13 +91,12 @@ def play_webcam(conf, model):
         model: A fine tuned instance of the `YOLOv8` class containing the YOLOv8 model.
 
     Returns:
-        None
+        true/false
 
     Raises:
         None
     """
     try:
-
         logging.info("Inside play_webcam function")
         cam_source = CamSource()
         source_webcam = cam_source.get_webcam_path()
@@ -106,10 +108,9 @@ def play_webcam(conf, model):
                 vid_cap = cv2.VideoCapture(source_webcam)
                 st_frame = st.empty()
                 logging.info("Starting the camera feed")
+                # flag = True
                 while (vid_cap.isOpened()):
-                    if b:
-                        vid_cap.release()
-                        break
+                    # while b and flag: 
                     success, image = vid_cap.read()
                     if success:
                         _display_detected_frames(conf,
@@ -117,12 +118,16 @@ def play_webcam(conf, model):
                                                 st_frame,
                                                 image,
                                                 )
-
-                    else:
+                    elif b:
                         vid_cap.release()
                         break
+                
+                
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
+
+        
+            return True
 
     except Exception as e:
         raise CustomException(e,sys)

@@ -9,6 +9,8 @@ import streamlit as st
 from src.components.model_loader import ModelLoader
 from src.components.cam_source import CamSource
 from src.utils import play_webcam
+import os
+from zipfile import ZipFile, ZIP_DEFLATED
 # Local Modules
 
 # Setting page layout
@@ -19,6 +21,11 @@ st.set_page_config(
 )
 logging.info("Page Config set successfully")
 
+# Function to handle download button click
+def download_file(file_path):
+    with open(file_path, "rb") as f:
+        data = f.read()
+    return data
 
 # Main page heading
 st.title("Leopard Segmentation And Tracking using YOLOv8")
@@ -47,7 +54,19 @@ try:
     logging.info("Radio bar added")
 
     if source_radio == cam_source.cam_source_config.WEBCAM:
-        play_webcam(confidence, model)
+        flag = play_webcam(confidence, model)
+        # if flag==True:
+        zip_path = "Results.zip"
+        directory = './outputs'
+        with ZipFile(zip_path,'w',ZIP_DEFLATED) as zip:
+            for filename in os.listdir(directory):
+                with open(os.path.join(directory, filename),encoding="utf8") as f:
+                    zip.write(f.name)
+        
+        logging.info("Zip file Prepared")
+        file_path = "Results.zip"
+        file_data = download_file(file_path)
+        st.sidebar.download_button(label="Download Result", data=file_data, file_name="Results.zip", mime="application/zip")
     else:
         st.error("Please select a valid source type!")
 
